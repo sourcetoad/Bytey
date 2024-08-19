@@ -41,7 +41,7 @@ class Bytey
             // Break the value into 5-bit chunks and encode them + add 63.
             $chunk = '';
             while ($value >= 0x20) {
-                $chunk .= chr((0x20 | ($value & 0x1f)) + 63);
+                $chunk .= chr((0x20 | ($value & 0x1F)) + 63);
                 $value >>= 5;
             }
 

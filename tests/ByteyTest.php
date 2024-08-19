@@ -1,8 +1,8 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Sourcetoad\Bytey\Tests;
-
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
