@@ -29,8 +29,6 @@ class Bytey
             throw new \InvalidArgumentException('Coordinates must be items of <lat, lng> tuples.');
         }
 
-        // A PHP implementation of the Google Polyline Algorithm
-        // https://developers.google.com/maps/documentation/utilities/polylinealgorithm
         foreach ($coordinates as $coordinate) {
             // Record the current index and offset for delta encoding.
             $offset = $index % $tupleSize;
