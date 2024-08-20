@@ -11,14 +11,20 @@ use Sourcetoad\Bytey\Bytey;
 class ByteyTest extends TestCase
 {
     #[DataProvider('googleDataProvider')]
-    public function testGoogleEncode(array $coordinates, string $expected): void
+    public function testGooglePolylineEncode(array $coordinates, string $expected): void
     {
-        $this->assertEquals($expected, Bytey::googleEncode($coordinates));
+        $this->assertEquals($expected, Bytey::googlePolylineEncode($coordinates));
     }
 
     public static function googleDataProvider(): array
     {
         return [
+            'simple example' => [
+                'coordinates' => [
+                    [-179.9832104],
+                ],
+                'expected' => '`~oia@',
+            ],
             'google example' => [
                 'coordinates' => [
                     [38.5, -120.2],

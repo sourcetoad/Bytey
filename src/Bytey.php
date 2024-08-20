@@ -8,9 +8,13 @@ use Illuminate\Support\Arr;
 
 class Bytey
 {
-    const PRECISION = 6;
+    const PRECISION = 5;
 
-    public static function googleEncode(array $coordinates): string
+    /**
+     * Encodes an array of coordinates into a Google Polyline string.
+     * Expects an array of <lat, lng> tuples.
+     */
+    public static function googlePolylineEncode(array $coordinates): string
     {
         $tupleSize = count($coordinates[0] ?? []);
         $coordinates = Arr::flatten($coordinates);
@@ -27,15 +31,16 @@ class Bytey
         // https://developers.google.com/maps/documentation/utilities/polylinealgorithm
         foreach ($coordinates as $coordinate) {
             // Record the current index and offset for delta encoding.
-            $offset = $index++ % $tupleSize;
-            $previous[$offset] = $coordinate;
+            $offset = $index % $tupleSize;
 
             // Take the signed value and multiply it by 1e5, round the result.
-            $coordinate = (float) $coordinate;
-            $coordinate = (int) round($coordinate * pow(10, self::PRECISION));
+            $coordinate = (int) round((float) $coordinate * pow(10, self::PRECISION));
 
-            // Delta encode the value.
-            $value = $coordinate - $previous[$offset];
+            // only include the offset from the previous (except the first)
+            $value = $index === $offset ? $coordinate : $coordinate - $previous[$offset];
+            $previous[$offset] = $coordinate;
+
+            // Shift the value left 1 bit if it's negative.
             $value = ($value < 0) ? ~($value << 1) : ($value << 1);
 
             // Break the value into 5-bit chunks and encode them + add 63.
@@ -47,6 +52,8 @@ class Bytey
 
             $chunk .= chr($value + 63);
             $encodedString .= $chunk;
+
+            $index++;
         }
 
         return $encodedString;
