@@ -13,6 +13,8 @@ class Bytey
     /**
      * Encodes an array of coordinates into a Google Polyline string.
      * Expects an array of <lat, lng> tuples.
+     *
+     * @link https://developers.google.com/maps/documentation/utilities/polylinealgorithm
      */
     public static function googlePolylineEncode(array $coordinates): string
     {
