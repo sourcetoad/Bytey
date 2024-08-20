@@ -10,6 +10,9 @@ class Bytey
 {
     const PRECISION = 5;
 
+    /** to ensure proper display, encoded values are summed with 63 (the ASCII character '?')  */
+    const ASCII_OFFSET = 63;
+
     /**
      * Encodes an array of coordinates into a Google Polyline string.
      * Expects an array of <lat, lng> tuples.
@@ -36,21 +39,23 @@ class Bytey
             // Take the signed value and multiply it by 1e5, round the result.
             $coordinate = (int) round((float) $coordinate * pow(10, self::PRECISION));
 
-            // only include the offset from the previous (except the first)
-            $value = $index === $offset ? $coordinate : $coordinate - $previous[$offset];
+            // Only include the offset from the previous (except the first)
+            $value = $coordinate - ($previous[$offset] ?? 0);
             $previous[$offset] = $coordinate;
 
-            // Shift the value left 1 bit if it's negative.
-            $value = ($value < 0) ? ~($value << 1) : ($value << 1);
+            // Handle negative values (bitwise NOT, then left shift)
+            $value = $value < 0 ? ~($value << 1) : ($value << 1);
 
-            // Break the value into 5-bit chunks and encode them + add 63.
+            // Break the value into 5-bit chunks ensuring we skip the last chunk to work manually.
             $chunk = '';
             while ($value >= 0x20) {
-                $chunk .= chr((0x20 | ($value & 0x1F)) + 63);
+                // OR each chunk with 0x20 and add 63 to ensure proper display.
+                $chunk .= chr((0x20 | ($value & 0x1F)) + self::ASCII_OFFSET);
                 $value >>= 5;
             }
 
-            $chunk .= chr($value + 63);
+            // Add the final chunk and append it to the encoded string.
+            $chunk .= chr($value + self::ASCII_OFFSET);
             $encodedString .= $chunk;
 
             $index++;
