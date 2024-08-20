@@ -25,6 +25,13 @@ class ByteyTest extends TestCase
                 ],
                 'expected' => '`~oia@',
             ],
+            'rounding example' => [
+                'coordinates' => [
+                    [48.000006, 2.000004],
+                    [48.00001, 2.00000],
+                ],
+                'expected' => 'a_~cH_seK??',
+            ],
             'google example' => [
                 'coordinates' => [
                     [38.5, -120.2],
