@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Sourcetoad\Bytey;
 
-use Illuminate\Support\Arr;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
 
 class Bytey
 {
@@ -22,7 +23,7 @@ class Bytey
     public static function googlePolylineEncode(array $coordinates): string
     {
         $tupleSize = count($coordinates[0] ?? []);
-        $coordinates = Arr::flatten($coordinates);
+        $coordinates = new RecursiveIteratorIterator(new RecursiveArrayIterator($coordinates));
         $previous = array_fill(0, $tupleSize, 0);
 
         $encodedString = '';
