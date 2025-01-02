@@ -11,7 +11,7 @@ use Sourcetoad\Bytey\Bytey;
 class ByteyTest extends TestCase
 {
     #[DataProvider('googleDataProvider')]
-    public function testGooglePolylineEncode(array $coordinates, string $expected): void
+    public function test_google_polyline_encode(array $coordinates, string $expected): void
     {
         $this->assertEquals($expected, Bytey::googlePolylineEncode($coordinates));
     }
