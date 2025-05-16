@@ -40,6 +40,16 @@ class ByteyTest extends TestCase
                 ],
                 'expected' => '_p~iF~ps|U_ulLnnqC_mqNvxq`@',
             ],
+            'blog example' => [
+                'coordinates' => [
+                    [28.03630, -82.49009],
+                    [28.03654, -82.49009],
+                    [28.03655, -82.49099],
+                    [28.03629, -82.49100],
+                    [28.03630, -82.49009],
+                ],
+                'expected' => '{ybjD`jnvNo@?ArDr@@AuD',
+            ],
         ];
     }
 }
